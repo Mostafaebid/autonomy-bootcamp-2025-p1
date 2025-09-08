@@ -43,23 +43,22 @@ class DetectBlue:
         # ============
         # ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
         # ============
-        # Convert to HSV
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+       hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        # Blue range (OpenCV Hue ∈ [0,180]) — loosened S/V, then clean
-        lower_blue = np.array([100, 100, 40], dtype=np.uint8)
-        upper_blue = np.array([140, 255, 255], dtype=np.uint8)
+       # Blue range (wider hue, moderate S/V)
+       lower_blue = np.array([95, 80, 50], dtype=np.uint8)
+       upper_blue = np.array([145, 255, 255], dtype=np.uint8)
 
-        # Threshold to uint8 mask (0/255)
-        mask = cv2.inRange(hsv, lower_blue, upper_blue)
+       # Threshold
+       mask = cv2.inRange(hsv, lower_blue, upper_blue)
 
-        # Fill small holes then remove specks
-        kernel = np.ones((5, 5), dtype=np.uint8)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN,  kernel, iterations=1)
+       # Fill gaps then remove specks
+       kernel = np.ones((5, 5), dtype=np.uint8)
+       mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1)
+       mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN,  kernel, iterations=1)
 
-        # Optional visualization of masked image
-        res = cv2.bitwise_and(img, img, mask=mask)
+       # Optional visualization
+       res = cv2.bitwise_and(img, img, mask=mask)
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
         # ============
