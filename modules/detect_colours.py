@@ -46,8 +46,8 @@ class DetectBlue:
        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
        # Blue range (wider hue, moderate S/V)
-       lower_blue = np.array([95, 80, 50], dtype=np.uint8)
-       upper_blue = np.array([145, 255, 255], dtype=np.uint8)
+       lower_blue = np.array([92, 80, 50], dtype=np.uint8)
+       upper_blue = np.array([148, 255, 255], dtype=np.uint8)
 
        # Threshold
        mask = cv2.inRange(hsv, lower_blue, upper_blue)
