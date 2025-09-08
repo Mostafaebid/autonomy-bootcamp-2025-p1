@@ -48,6 +48,10 @@ class DetectBlue:
 
         # Threshold to uint8 mask (0/255)
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
+        kernel = np.ones((3, 3), dtype=np.uint8)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)   
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1) 
+
 
         # Optional visualization of masked image
         res = cv2.bitwise_and(img, img, mask=mask)
