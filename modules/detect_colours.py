@@ -1,3 +1,8 @@
+cd C:\Users\Moustafa-Amr\warg\autonomy-bootcamp-2025-p1
+git switch Mostafaebid-patch-1
+
+$path = ".\modules\detect_colours.py"
+$content = @'
 """
 BOOTCAMPERS TO COMPLETE.
 
@@ -41,16 +46,17 @@ class DetectBlue:
         # Convert to HSV
         hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        # Blue range (OpenCV Hue ∈ [0,180])
-        lower_blue = np.array([100, 100, 40], dtype=np.uint8)  # lower S/V a bit to catch darker/less vivid blue
+        # Blue range (OpenCV Hue ∈ [0,180]) — loosened S/V, then clean
+        lower_blue = np.array([100, 100, 40], dtype=np.uint8)
         upper_blue = np.array([140, 255, 255], dtype=np.uint8)
-        
+
         # Threshold to uint8 mask (0/255)
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
-        kernel = np.ones((5, 5), dtype=np.uint8)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel, iterations=1)   
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1) 
 
+        # Fill small holes then remove specks
+        kernel = np.ones((5, 5), dtype=np.uint8)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=1)
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN,  kernel, iterations=1)
 
         # Optional visualization of masked image
         res = cv2.bitwise_and(img, img, mask=mask)
@@ -127,3 +133,5 @@ class DetectRed:
         # ============
         # ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
         # ============
+'@
+Set-Content -Path $path -Value $content -Encoding UTF8
